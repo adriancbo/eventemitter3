@@ -1,4 +1,5 @@
-'use strict';
+;(function(window) {
+  'use strict';
 
 //
 // We store our EE objects in a plain object whose properties are event names.
@@ -255,6 +256,13 @@ EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
 EventEmitter.prefixed = prefix;
 
 //
-// Expose the module.
+// Expose CommonJS, AMD or browser
 //
-module.exports = EventEmitter;
+if (typeof exports === 'object')
+  module.exports = EventEmitter
+else if (typeof define === 'function' && define.amd)
+  define(function() { return EventEmitter })
+else
+  window.EventEmitter = EventEmitter
+
+})(typeof window != 'undefined' ? window : undefined);
